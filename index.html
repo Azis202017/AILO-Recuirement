@@ -1,0 +1,194 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    
+    <!--====== Title ======-->
+    <title>AILO News NLP</title>
+    
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--====== Favicon Icon ======-->
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+        
+    <!--====== Animate CSS ======-->
+    <link rel="stylesheet" href="assets/css/animate.css">
+        
+    <!--====== lineicons CSS ======-->
+    <link rel="stylesheet" href="assets/css/lineicons.css">
+        
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    
+    <!--====== Default CSS ======-->
+    <link rel="stylesheet" href="assets/css/default.css">
+    
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+</head>
+
+<body>
+    <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+    
+
+    <div class="preloader">
+        <div class="loader">
+            <div class="ytp-spinner">
+                <div class="ytp-spinner-container">
+                    <div class="ytp-spinner-rotator">
+                        <div class="ytp-spinner-left">
+                            <div class="ytp-spinner-circle"></div>
+                        </div>
+                        <div class="ytp-spinner-right">
+                            <div class="ytp-spinner-circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!--====== HEADER PART START ======-->
+
+    <header class="header-area">
+  
+        <div id="home" class="header-hero bg_cover d-lg-flex align-items-center">
+            
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+            <div class="shape shape-6"></div>
+            
+            <div class="container">
+                <div class="row align-items-center justify-content-center justify-content-lg-between">
+                    <div class="col-lg-12 col-md-10">
+                        <div class="header-hero-content">
+                            <h3 class="header-title wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.2s"><span>Predict The Sentiment</h3>
+                            <p class="text wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.6s">Please write the text above this and then predict the text what is the sentiment from that input text</p>
+                           <textarea name=""  class="form-control w-100 mt-3" id="textInput" cols="30" rows="10"></textarea>
+                            <ul class="d-flex">
+                                <li><button  id="predictButton" class="main-btn wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.8s">Predict</button></li>
+                            </ul>
+                             <div id="predictionResult" class="mt-3"></div>
+                        </div> <!-- header hero content -->
+                    </div>
+                   
+                </div> <!-- row -->
+            </div> <!-- container -->
+            <div class="header-shape-1"></div> <!-- header shape -->
+            <div class="header-shape-2">
+                <img src="assets/images/header-shape-2.svg" alt="shape">
+            </div> <!-- header shape -->
+        </div> <!-- header hero -->
+    </header>
+
+    <!--====== HEADER PART ENDS ======-->
+    
+    <!--====== SERVICES PART START ======-->
+    
+   
+   
+    
+    <!--====== PART ENDS ======-->
+    
+    <!--====== BACK TOP TOP PART START ======-->
+
+    <a href="#" class="back-to-top"><i class="lni lni-chevron-up"></i></a>
+
+    <!--====== BACK TOP TOP PART ENDS ======-->
+    
+    <!--====== PART START ======-->
+    
+<!--
+    <section class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-"></div> 
+            </div>
+        </div>
+    </section>
+-->
+    
+    <!--====== PART ENDS ======-->
+    
+
+
+
+
+    <!--====== Jquery js ======-->
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
+    
+    <!--====== Bootstrap js ======-->
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    
+    
+    <!--====== WOW js ======-->
+    <script src="assets/js/wow.min.js"></script>
+    
+    
+    <!--====== Scrolling Nav js ======-->
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/scrolling-nav.js"></script>
+    
+    <!--====== Main js ======-->
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const predictButton = document.getElementById('predictButton');
+            const textInput = document.getElementById('textInput');
+            const predictionResult = document.getElementById('predictionResult');
+
+            predictButton.addEventListener('click', function () {
+                const userInput = textInput.value;
+
+                // Make an API request to your backend with the user input
+                fetch('http://127.0.0.1:5000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: userInput }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the prediction result on the page
+                    const predictedClass = data.debug_info.predicted_class;
+                    const probabilities = data.debug_info.probabilities;
+                    const processedInput = data.debug_info.processed_input;
+
+                    // Format probabilities for display
+                    const formattedProbabilities = {
+                        negative: `${(parseFloat(probabilities.negative) * 100).toFixed(2)}%`,
+                        neutral: `${(parseFloat(probabilities.neutral) * 100).toFixed(2)}%`,
+                        positive: `${(parseFloat(probabilities.positive) * 100).toFixed(2)}%`,
+                    };
+
+                    predictionResult.innerHTML = `
+                        <p>Sentiment: ${predictedClass}</p>
+                        <p>Probabilities:</p>
+                        <ul>
+                            <li>Negative: ${formattedProbabilities.negative}</li>
+                            <li>Neutral: ${formattedProbabilities.neutral}</li>
+                            <li>Positive: ${formattedProbabilities.positive}</li>
+                        </ul>
+                        <p>Processed Input: ${processedInput}</p>
+                    `;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+    
+</body>
+
+</html>
